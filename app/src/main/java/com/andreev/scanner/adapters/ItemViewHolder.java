@@ -1,4 +1,4 @@
-package com.andreev.scanner.adapter;
+package com.andreev.scanner.adapters;
 
 import android.view.View;
 import android.widget.TextView;
@@ -9,10 +9,6 @@ import com.andreev.scanner.R;
 
 public class ItemViewHolder extends RecyclerView.ViewHolder {
 
-    public interface IListener {
-        void onItemClicked(int position);
-    }
-
     protected TextView typeTV;
     protected TextView markTV;
     protected TextView diameterTV;
@@ -21,12 +17,10 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
     protected TextView meltingTV;
     protected TextView massTV;
     protected TextView statusTV;
-    protected IListener listener;
 
 
-    public ItemViewHolder(View itemView, final IListener listener){
+    public ItemViewHolder(View itemView){
         super(itemView);
-        this.listener = listener;
         typeTV = itemView.findViewById(R.id.type);
         markTV = itemView.findViewById(R.id.mark);
         diameterTV = itemView.findViewById(R.id.diameter);
@@ -35,14 +29,5 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
         meltingTV = itemView.findViewById(R.id.melting);
         massTV = itemView.findViewById(R.id.mass);
         statusTV = itemView.findViewById(R.id.status);
-
-        final View.OnClickListener clickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onItemClicked(getAdapterPosition());
-            }
-        };
-
-        itemView.setOnClickListener(clickListener);
     }
 }

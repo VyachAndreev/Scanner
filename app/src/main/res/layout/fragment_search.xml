@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -10,30 +9,51 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/search_et"
-        android:layout_width="0dp"
-        android:layout_weight="4"
-        android:layout_height="wrap_content"
-        android:hint="@string/search"
-        android:autofillHints="name"
-        android:inputType="text"
-        />
 
-    <ImageButton
-        android:id="@+id/search_btn"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_search"
-        android:contentDescription="@string/search" />
+        <AutoCompleteTextView
+            android:id="@+id/search_et"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+
+            android:autofillHints="name"
+            android:hint="@string/search"
+            android:singleLine="true"
+            android:inputType="text"
+
+            android:nextFocusRight="@string/search"/>
+
+        <ImageButton
+            android:id="@+id/search_btn"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+
+            android:contentDescription="@string/search"
+
+            android:src="@drawable/ic_search" />
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/nothing_found"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+
+        android:text="@string/nothing"
+        android:textColor="@color/black"
+        android:textSize="30sp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
+
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

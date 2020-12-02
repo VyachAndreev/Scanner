@@ -1,4 +1,4 @@
-package com.andreev.scanner.adapter;
+package com.andreev.scanner.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,17 +10,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.andreev.scanner.R;
 import com.andreev.scanner.classes.GetPositionView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SearchAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
-    private ItemViewHolder.IListener listener;
     private List<GetPositionView> data;
 
-    public SearchAdapter(List <GetPositionView> data, ItemViewHolder.IListener listener){
+    public SearchAdapter(List <GetPositionView> data){
         this.data = data;
-        this.listener = listener;
     }
 
     @NonNull
@@ -29,7 +26,7 @@ public class SearchAdapter extends RecyclerView.Adapter<ItemViewHolder> {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         final View layout = inflater.inflate(R.layout.item_searched, parent, false);
 
-        return new ItemViewHolder(layout, listener);
+        return new ItemViewHolder(layout);
     }
 
     @Override
