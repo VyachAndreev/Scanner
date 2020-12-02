@@ -13,14 +13,28 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
         void onItemClicked(int position);
     }
 
-    protected TextView textView;
+    protected TextView typeTV;
+    protected TextView markTV;
+    protected TextView diameterTV;
+    protected TextView packingTV;
+    protected TextView partyTV;
+    protected TextView meltingTV;
+    protected TextView massTV;
+    protected TextView statusTV;
     protected IListener listener;
 
 
     public ItemViewHolder(View itemView, final IListener listener){
         super(itemView);
         this.listener = listener;
-        textView = itemView.findViewById(R.id.name);
+        typeTV = itemView.findViewById(R.id.type);
+        markTV = itemView.findViewById(R.id.mark);
+        diameterTV = itemView.findViewById(R.id.diameter);
+        packingTV = itemView.findViewById(R.id.packing);
+        partyTV = itemView.findViewById(R.id.party);
+        meltingTV = itemView.findViewById(R.id.melting);
+        massTV = itemView.findViewById(R.id.mass);
+        statusTV = itemView.findViewById(R.id.status);
 
         final View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
