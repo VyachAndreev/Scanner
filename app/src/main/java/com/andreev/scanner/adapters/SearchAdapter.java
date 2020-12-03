@@ -39,34 +39,42 @@ public class SearchAdapter extends RecyclerView.Adapter<ItemViewHolder> {
         holder.meltingTV.setText("Плавка: " + getPositionView.getPlav());
         holder.massTV.setText("Вес: " + getPositionView.getMass().toString());
         String a;
-        switch (getPositionView.getStatus()){
-            case "Arriving":
-                a = "Прибывает";
-                break;
-            case "In_stock":
-                a = "На складе";
-                break;
-            case "Departured":
-                a = "Отгружен";
-                break;
-            default:
-                a = "Местоположение неизвестно";
-                break;
+        if (getPositionView.getStatus() != null) {
+            switch (getPositionView.getStatus()) {
+                case "Arriving":
+                    a = "Прибывает";
+                    break;
+                case "In_stock":
+                    a = "На складе";
+                    break;
+                case "Departured":
+                    a = "Отгружен";
+                    break;
+                default:
+                    a = "Местоположение неизвестно";
+                    break;
+            }
+            holder.statusTV.setText("Статус: " + a);
+        } else {
+            holder.statusTV.setText("");
         }
-        holder.statusTV.setText("Статус: " + a);
-        switch (getPositionView.getType()){
-            case "POSITION":
-                a = "Позиция";
-                break;
-            case "PACKAGE":
-                a = "Поддон";
-                break;
-            default:
-                a = "Статуc неизвестен";
-                break;
+        if (getPositionView.getType() != null) {
+            switch (getPositionView.getType()) {
+                case "POSITION":
+                    a = "Позиция";
+                    break;
+                case "PACKAGE":
+                    a = "Поддон";
+                    break;
+                default:
+                    a = "Статуc неизвестен";
+                    break;
 
+            }
+            holder.typeTV.setText(a);
+        } else {
+            holder.typeTV.setText("Позиция");
         }
-        holder.typeTV.setText(a);
     }
 
     @Override
