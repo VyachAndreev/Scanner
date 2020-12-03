@@ -58,7 +58,9 @@ public class SearchAdapter extends RecyclerView.Adapter<ItemViewHolder> {
             case "POSITION":
                 a = "Позиция";
                 break;
-                //TODO processing of all values of status
+            case "PACKAGE":
+                a = "Поддон";
+                break;
             default:
                 a = "Статуc неизвестен";
                 break;
