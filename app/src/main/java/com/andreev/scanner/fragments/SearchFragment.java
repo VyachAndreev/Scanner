@@ -40,11 +40,22 @@ import okhttp3.Response;
 
 public class SearchFragment extends Fragment {
 
-    private List<String> hints = new ArrayList<>();
-    private List<GetPositionView> data = new ArrayList<>();
+    private final List<String> hints = new ArrayList<>();
+    private final List<GetPositionView> data = new ArrayList<>();
+    private boolean wasButtonPressed = false;
+    private String textSearched = "";
+
     private RecyclerView recyclerView;
     private AutoCompleteTextView searchET;
     private TextView nothingFoundTV;
+
+    private static final String searchUrl = "http://ferro-trade.ru/api/search/";
+    private static final String searchTagUrl = "http://ferro-trade.ru/api/search/tag/";
+
+    private static final String KEY_STRING = "textSearched";
+    private static final String KEY_BOOLEAN = "wasButtonPressed";
+
+
 
     @Nullable
     @Override
@@ -63,6 +74,14 @@ public class SearchFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        if (savedInstanceState != null) {
+            textSearched = savedInstanceState.getString(KEY_STRING);
+            wasButtonPressed = savedInstanceState.getBoolean(KEY_BOOLEAN);
+            if (wasButtonPressed) {
+                makeRequestAndSet(searchUrl + textSearched, false);
+            }
+        }
 
 
         searchET.setOnEditorActionListener((v, actionId, event) -> {
@@ -83,10 +102,10 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                Log.i("textChangedListener", "http://ferro-trade.ru/api/search/tag/" + searchET.getText().toString());
+                Log.i("textChangedListener", searchTagUrl + searchET.getText().toString());
                 if (!searchET.getText().toString().isEmpty()) {
                     try {
-                        makeRequestAndSet("http://ferro-trade.ru/api/search/tag/" + searchET.getText().toString(), true);
+                        makeRequestAndSet(searchTagUrl + searchET.getText().toString(), true);
                     } catch (Exception e) {
                         Log.e("exception occured", e.getMessage());
                     }
@@ -95,15 +114,17 @@ public class SearchFragment extends Fragment {
         });
 
         fSearchButton.setOnClickListener(view1 -> {
-            String search = searchET.getText().toString();
+            textSearched = searchET.getText().toString();
+            wasButtonPressed = true;
             try {
-                makeRequestAndSet("http://ferro-trade.ru/api/search/" + search, false);
+                makeRequestAndSet(searchUrl + textSearched, false);
             } catch(Exception e){
                 nothingFoundTV.setVisibility(View.VISIBLE);
                 Log.e("exception occured", e.getMessage());
             }
         });
     }
+
 
     public void makeRequestAndSet(String url, boolean f) {
         OkHttpClient client = new OkHttpClient();
@@ -133,7 +154,8 @@ public class SearchFragment extends Fragment {
                                 new TypeToken<List<String>>() {
                                 }.getType());
                         hints.addAll(list);
-                        getActivity().runOnUiThread(() -> setHints());
+                        if (getActivity() != null)
+                            getActivity().runOnUiThread(() -> setHints());
                     } catch (Exception e) {
                         Log.e("exception occured", e.getMessage());
                     }
@@ -148,11 +170,19 @@ public class SearchFragment extends Fragment {
                     } catch (Exception e) {
                         Log.e("exception occured", e.getMessage());
                     }
+                    if (getActivity() != null)
                         getActivity().runOnUiThread(() -> setNewAdapter());
                 }
             }
 
         });
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(KEY_STRING, textSearched);
+        outState.putBoolean(KEY_BOOLEAN, wasButtonPressed);
     }
 
     void setHints(){
