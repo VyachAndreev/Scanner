@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,23 +19,19 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.andreev.scanner.App;
 import com.andreev.scanner.R;
 import com.andreev.scanner.adapters.SearchAdapter;
 import com.andreev.scanner.classes.GetPositionView;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SearchFragment extends Fragment {
 
@@ -49,12 +44,8 @@ public class SearchFragment extends Fragment {
     private AutoCompleteTextView searchET;
     private TextView nothingFoundTV;
 
-    private static final String searchUrl = "http://ferro-trade.ru/api/search/";
-    private static final String searchTagUrl = "http://ferro-trade.ru/api/search/tag/";
-
     private static final String KEY_STRING = "textSearched";
     private static final String KEY_BOOLEAN = "wasButtonPressed";
-
 
 
     @Nullable
@@ -79,7 +70,7 @@ public class SearchFragment extends Fragment {
             textSearched = savedInstanceState.getString(KEY_STRING);
             wasButtonPressed = savedInstanceState.getBoolean(KEY_BOOLEAN);
             if (wasButtonPressed) {
-                makeRequestAndSet(searchUrl + textSearched, false);
+                makeRequestAndSet(textSearched, false);
             }
         }
 
@@ -102,11 +93,11 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                Log.i("textChangedListener", searchTagUrl + searchET.getText().toString());
+                Log.i("textChangedListener", searchET.getText().toString());
                 if (!searchET.getText().toString().isEmpty()) {
                     try {
-                        makeRequestAndSet(searchTagUrl + searchET.getText().toString(), true);
-                    } catch (Exception e) {
+                        makeRequestAndSet(searchET.getText().toString(), true);
+                    } catch (NullPointerException e) {
                         Log.e("exception occured", e.getMessage());
                     }
                 }
@@ -116,66 +107,69 @@ public class SearchFragment extends Fragment {
         fSearchButton.setOnClickListener(view1 -> {
             textSearched = searchET.getText().toString();
             wasButtonPressed = true;
-            try {
-                makeRequestAndSet(searchUrl + textSearched, false);
-            } catch(Exception e){
+            if (textSearched.isEmpty()) {
+                data.clear();
                 nothingFoundTV.setVisibility(View.VISIBLE);
-                Log.e("exception occured", e.getMessage());
+            } else {
+                try {
+                    makeRequestAndSet(textSearched, false);
+                } catch (NullPointerException e) {
+                    nothingFoundTV.setVisibility(View.VISIBLE);
+                    Log.e("exception occured", e.getMessage());
+                }
             }
         });
     }
 
 
-    public void makeRequestAndSet(String url, boolean f) {
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url(url)
-                .get()
-                .build();
-
-        final String[] res = new String[1];
-        client.newCall(request).enqueue(new Callback() {
-
-            @Override
-            public void onFailure(@NotNull Call call, IOException e) {
-                Log.i("response", e.getMessage());
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                res[0] = response.body().string();
-                Log.i("response", res[0]);
-                Gson gson = new Gson();
-                if (f){
-                    hints.clear();
-                    try {
-                        List<String> list = gson.fromJson(res[0],
-                                new TypeToken<List<String>>() {
-                                }.getType());
-                        hints.addAll(list);
-                        if (getActivity() != null)
-                            getActivity().runOnUiThread(() -> setHints());
-                    } catch (Exception e) {
-                        Log.e("exception occured", e.getMessage());
+    public void makeRequestAndSet(String text, boolean f) {
+        if (f){
+            hints.clear();
+            try{
+                App.getApi().tags(text).enqueue(new Callback<List<String>>() {
+                    @Override
+                    public void onResponse(@NotNull Call<List<String>> call, @NotNull Response<List<String>> response) {
+                        if (response.body() != null) {
+                            hints.addAll(response.body());
+                            Log.i("response", response.body().toString());
+                            if (getActivity() != null) {
+                                getActivity().runOnUiThread(() -> setHints());
+                            }
+                        }
                     }
-                } else {
-                    data.clear();
-                    try {
-                        List<GetPositionView> list = gson.fromJson(res[0],
-                                new TypeToken<List<GetPositionView>>() {
-                                }.getType());
-                        Log.i("response", String.valueOf(list.size()));
-                        data.addAll(list);
-                    } catch (Exception e) {
-                        Log.e("exception occured", e.getMessage());
-                    }
-                    if (getActivity() != null)
-                        getActivity().runOnUiThread(() -> setNewAdapter());
-                }
-            }
 
-        });
+                    @Override
+                    public void onFailure(@NotNull Call<List<String>> call, @NotNull Throwable t) {
+                        Log.e("response", call.request().toString());
+                        Log.e("response", t.getMessage());
+                    }
+                });
+            } catch (Exception e) {
+                Log.e("exception occurred", e.getMessage());
+            }
+        } else {
+            data.clear();
+            try{
+                App.getApi().searchedPositions(text).enqueue(new Callback<List<GetPositionView>>() {
+                    @Override
+                    public void onResponse(@NotNull Call<List<GetPositionView>> call, @NotNull Response<List<GetPositionView>> response) {
+                        if (response.body() != null) {
+                            data.addAll(response.body());
+                            Log.i("response", response.body().toString());
+                            if (getActivity() != null)
+                                getActivity().runOnUiThread(() -> setNewAdapter());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull Call<List<GetPositionView>> call, @NotNull Throwable t) {
+                        Log.e("response", t.getMessage());
+                    }
+                });
+            } catch (Exception e) {
+                Log.e("exception occurred", e.getMessage());
+            }
+        }
     }
 
     @Override
@@ -185,7 +179,7 @@ public class SearchFragment extends Fragment {
         outState.putBoolean(KEY_BOOLEAN, wasButtonPressed);
     }
 
-    void setHints(){
+    void setHints() throws NullPointerException{
         searchET.setAdapter(new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_dropdown_item_1line, hints));
         if (hints.size() > 0) {
@@ -197,8 +191,8 @@ public class SearchFragment extends Fragment {
 
     }
 
-    void setNewAdapter(){
-        if (data.size() == 0){
+    void setNewAdapter() throws NullPointerException{
+        if (data.size() == 0) {
             nothingFoundTV.setVisibility(View.VISIBLE);
         } else {
             nothingFoundTV.setVisibility(View.GONE);

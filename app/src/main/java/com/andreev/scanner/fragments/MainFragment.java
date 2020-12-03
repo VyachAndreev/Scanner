@@ -23,9 +23,25 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Button seeAllButton = view.findViewById(R.id.see_all_btn);
         Button searchButton = view.findViewById(R.id.search_btn);
-        searchButton.setOnClickListener(view1 -> getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new SearchFragment())
-                .commitAllowingStateLoss());
+
+        seeAllButton.setOnClickListener(view1 -> {
+            if (getActivity() != null)
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new SeeAllFragment())
+                        .addToBackStack(null)
+                        .commitAllowingStateLoss();
+        });
+
+        searchButton.setOnClickListener(view12 -> {
+            if (getActivity() != null)
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new SearchFragment())
+                        .addToBackStack(null)
+                        .commitAllowingStateLoss();
+        });
+
     }
 }

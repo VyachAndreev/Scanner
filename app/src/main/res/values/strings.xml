@@ -9,5 +9,10 @@
     <string name="mass">Вес: </string>
     <string name="status">Статус: </string>
     <string name="nothing">Ничего не найдено</string>
+    <string name="see_all">Посмотреть все</string>
+    <string name="sort">Сортировка</string>
+    <string name="table">Таблица</string>
+    <string name="cards">Карточки</string>
+    <string name="filter">Фильтр</string>
 
 </resources>
