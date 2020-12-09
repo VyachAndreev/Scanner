@@ -1,5 +1,6 @@
 package com.andreev.scanner.classes;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,7 +8,7 @@ import java.util.Map;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class GetPositionView {
+public class GetPositionView implements Serializable {
 
     @SerializedName("id")
     @Expose

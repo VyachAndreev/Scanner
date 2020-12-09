@@ -6,7 +6,6 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface API {
@@ -16,6 +15,10 @@ public interface API {
     @GET("/api/search/{text}")
     Call<List<GetPositionView>> searchedPositions(@Path("text") String text);
 
+    @GET("/api/position/{id}")
+    Call<GetPositionView> byId(@Path("id") String id);
+
     @GET("/api/search/tag/{text}")
     Call<List<String>> tags(@Path("text") String text);
+
 }

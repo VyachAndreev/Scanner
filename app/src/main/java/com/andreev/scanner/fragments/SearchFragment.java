@@ -1,5 +1,6 @@
 package com.andreev.scanner.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.andreev.scanner.App;
 import com.andreev.scanner.R;
+import com.andreev.scanner.adapters.ItemViewHolder;
 import com.andreev.scanner.adapters.SearchAdapter;
 import com.andreev.scanner.classes.GetPositionView;
 
@@ -47,6 +49,20 @@ public class SearchFragment extends Fragment {
     private static final String KEY_STRING = "textSearched";
     private static final String KEY_BOOLEAN = "wasButtonPressed";
 
+    public interface IListener {
+        public void onItemClicked(GetPositionView item);
+    }
+
+    protected IListener mListener;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if (requireActivity() instanceof IListener) {
+            mListener = (IListener) requireActivity();
+        }
+    }
 
     @Nullable
     @Override
@@ -197,6 +213,18 @@ public class SearchFragment extends Fragment {
         } else {
             nothingFoundTV.setVisibility(View.GONE);
         }
-        recyclerView.setAdapter(new SearchAdapter(data));
+        recyclerView.setAdapter(new SearchAdapter(data, new ItemClickedHandler()));
+    }
+
+    class ItemClickedHandler implements ItemViewHolder.IListener {
+        @Override
+        public void onItemClicked(int position) {
+            final GetPositionView item = data.get(position);
+
+            if (mListener != null) {
+                mListener.onItemClicked(item);
+                Log.i("idididid", item.getId().toString());
+            }
+        }
     }
 }

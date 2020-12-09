@@ -14,5 +14,7 @@
     <string name="table">Таблица</string>
     <string name="cards">Карточки</string>
     <string name="filter">Фильтр</string>
+    <string name="made_by">Производитель:</string>
+    <string name="to_main">На главную</string>
 
 </resources>

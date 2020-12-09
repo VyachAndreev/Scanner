@@ -1,5 +1,6 @@
 package com.andreev.scanner.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.andreev.scanner.App;
 import com.andreev.scanner.R;
+import com.andreev.scanner.adapters.ItemViewHolder;
 import com.andreev.scanner.adapters.SearchAdapter;
 import com.andreev.scanner.classes.GetPositionView;
 
@@ -28,9 +30,24 @@ import retrofit2.Response;
 
 public class SeeAllFragment extends Fragment {
 
-    private List<GetPositionView> positions = new ArrayList<>();
+    private final List<GetPositionView> positions = new ArrayList<>();
 
-    private SearchAdapter searchAdapter;
+    public interface IListener {
+        public void onItemClicked(GetPositionView item);
+    }
+    protected IListener mListener;
+    private RecyclerView recycler;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        Log.i("SeeAll", "listener ready to attach");
+        if (requireActivity() instanceof IListener) {
+            mListener = (IListener) requireActivity();
+            Log.i("SeeAll", "listenerAttached");
+        }
+    }
 
     @Nullable
     @Override
@@ -42,9 +59,7 @@ public class SeeAllFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        RecyclerView recycler = view.findViewById(R.id.recycler);
-        searchAdapter = new SearchAdapter(positions);
-        recycler.setAdapter(searchAdapter);
+        recycler = view.findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         try{
@@ -71,6 +86,18 @@ public class SeeAllFragment extends Fragment {
     }
 
     private void updateAdapter(){
-        searchAdapter.notifyDataSetChanged();
+        SearchAdapter searchAdapter = new SearchAdapter(positions, new ItemClickedHandler());
+        recycler.setAdapter(searchAdapter);
+    }
+
+    class ItemClickedHandler implements ItemViewHolder.IListener {
+        @Override
+        public void onItemClicked(int position) {
+            final GetPositionView item = positions.get(position);
+            if (mListener != null) {
+                Log.i("SeeAll", item.getId().toString());
+                mListener.onItemClicked(item);
+            }
+        }
     }
 }

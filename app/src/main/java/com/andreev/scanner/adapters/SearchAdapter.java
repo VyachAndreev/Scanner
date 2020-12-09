@@ -14,10 +14,13 @@ import java.util.List;
 
 public class SearchAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
-    private List<GetPositionView> data;
 
-    public SearchAdapter(List <GetPositionView> data){
+    protected final ItemViewHolder.IListener mIListener;
+    protected List<GetPositionView> data;
+
+    public SearchAdapter(List <GetPositionView> data, ItemViewHolder.IListener listener){
         this.data = data;
+        mIListener = listener;
     }
 
     @NonNull
@@ -26,7 +29,7 @@ public class SearchAdapter extends RecyclerView.Adapter<ItemViewHolder> {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         final View layout = inflater.inflate(R.layout.item_searched, parent, false);
 
-        return new ItemViewHolder(layout);
+        return new ItemViewHolder(layout, mIListener);
     }
 
     @Override
