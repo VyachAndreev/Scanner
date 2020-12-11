@@ -16,7 +16,10 @@ import com.andreev.scanner.MainActivity;
 import com.andreev.scanner.R;
 import com.andreev.scanner.classes.GetPositionView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,20 +27,11 @@ import retrofit2.Response;
 
 public class ItemFragment extends Fragment {
 
-    private GetPositionView item;
-    private TextView mark;
-    private TextView diameter;
-    private TextView packing;
-    private TextView party;
-    private TextView melting;
-    private TextView mass;
-    private TextView status;
-    private TextView manufacturer;
-
-    public static ItemFragment newInstance(GetPositionView item) {
+    public static ItemFragment newInstance(String id, boolean isPosition) {
 
         final Bundle extras = new Bundle();
-        extras.putSerializable(MainActivity.TAG, item);
+        extras.putString(MainActivity.idTAG, id);
+        extras.putBoolean(MainActivity.TAG, isPosition);
         final ItemFragment fragment = new ItemFragment();
         fragment.setArguments(extras);
 
@@ -55,54 +49,80 @@ public class ItemFragment extends Fragment {
 
         super.onViewCreated(view, savedInstanceState);
 
-        item = item();
+        final String id = id();
+        final Boolean isPosition = isPosition();
+        if (id != null && isPosition != null) {
+            if (isPosition) {
+                try {
+                    App.getApi().positionById(id).enqueue(new Callback<GetPositionView>() {
+                        @Override
+                        public void onResponse(Call<GetPositionView> call, Response<GetPositionView> response) {
+                            if (response.body() != null) {
+                                Log.i("ItemResponse", response.body().toString());
+                                setUI(view, response.body());
+                            }
+                        }
 
-        if (item != null) {
-
-            mark = view.findViewById(R.id.mark);
-            diameter = view.findViewById(R.id.diameter);
-            packing = view.findViewById(R.id.packing);
-            party = view.findViewById(R.id.party);
-            melting = view.findViewById(R.id.melting);
-            mass = view.findViewById(R.id.mass);
-            status = view.findViewById(R.id.status);
-            manufacturer = view.findViewById(R.id.made_by);
-
-            mark.setText(item.getMark());
-            diameter.setText(item.getDiameter());
-            packing.setText(item.getPacking());
-            party.setText(item.getPart());
-            melting.setText(item.getPlav());
-            mass.setText(item.getMass().toString());
-            manufacturer.setText(item.getManufacturer());
-            String a;
-            switch (item.getStatus()) {
-                case "Arriving":
-                    a = "Прибывает";
-                    break;
-                case "In_stock":
-                    a = "На складе";
-                    break;
-                case "Departured":
-                    a = "Отгружен";
-                    break;
-                default:
-                    a = "Местоположение неизвестно";
-                    break;
+                        @Override
+                        public void onFailure(Call<GetPositionView> call, Throwable t) {
+                            Log.i("ItemResponse", "failed");
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.e("exception occurred", e.getMessage());
+                }
             }
-            status.setText("Статус: " + a);
+        } else {
+            // TODO package
         }
     }
 
-    public GetPositionView item() {
+    public String id() {
         if (getArguments() == null) {
             return null;
         }
+        return getArguments().getString(MainActivity.idTAG);
+    }
 
-        final Serializable item =  getArguments().getSerializable(MainActivity.TAG);
-        if (item instanceof GetPositionView) {
-            return (GetPositionView) getArguments().getSerializable(MainActivity.TAG);
+    public Boolean isPosition() {
+        if (getArguments() == null) {
+            return null;
         }
-        return null;
+        return getArguments().getBoolean(MainActivity.TAG);
+    }
+
+    private void setUI(View view, GetPositionView item) {
+        TextView mark = view.findViewById(R.id.mark);
+        TextView diameter = view.findViewById(R.id.diameter);
+        TextView packing = view.findViewById(R.id.packing);
+        TextView party = view.findViewById(R.id.party);
+        TextView melting = view.findViewById(R.id.melting);
+        TextView mass = view.findViewById(R.id.mass);
+        TextView status = view.findViewById(R.id.status);
+        TextView manufacturer = view.findViewById(R.id.made_by);
+
+        mark.setText(item.getMark());
+        diameter.setText(item.getDiameter());
+        packing.setText(item.getPacking());
+        party.setText(item.getPart());
+        melting.setText(item.getPlav());
+        mass.setText(String.valueOf(item.getMass()));
+        manufacturer.setText(item.getManufacturer());
+        String a;
+        switch (item.getStatus()) {
+            case "Arriving":
+                a = "Прибывает";
+                break;
+            case "In_stock":
+                a = "На складе";
+                break;
+            case "Departured":
+                a = "Отгружен";
+                break;
+            default:
+                a = "Местоположение неизвестно";
+                break;
+        }
+        status.setText(a);
     }
 }

@@ -206,4 +206,24 @@ public class GetPositionView implements Serializable {
     public void setType(String type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "GetPositionView{" +
+                "id=" + id +
+                ", createdFrom=" + createdFrom +
+                ", mark='" + mark + '\'' +
+                ", diameter='" + diameter + '\'' +
+                ", packing='" + packing + '\'' +
+                ", date='" + date + '\'' +
+                ", comment='" + comment + '\'' +
+                ", part='" + part + '\'' +
+                ", plav='" + plav + '\'' +
+                ", manufacturer='" + manufacturer + '\'' +
+                ", mass=" + mass +
+                ", status='" + status + '\'' +
+                ", all=" + all +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

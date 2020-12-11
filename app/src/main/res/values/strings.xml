@@ -16,5 +16,7 @@
     <string name="filter">Фильтр</string>
     <string name="made_by">Производитель:</string>
     <string name="to_main">На главную</string>
+    <string name="no_data">Данные отсутствуют</string>
+
 
 </resources>

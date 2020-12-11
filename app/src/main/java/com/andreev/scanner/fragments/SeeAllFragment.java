@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,10 +34,11 @@ public class SeeAllFragment extends Fragment {
     private final List<GetPositionView> positions = new ArrayList<>();
 
     public interface IListener {
-        public void onItemClicked(GetPositionView item);
+        public void onItemClicked(String id, boolean isPosition);
     }
     protected IListener mListener;
     private RecyclerView recycler;
+    private ProgressBar progressBar;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -59,6 +61,7 @@ public class SeeAllFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        progressBar = view.findViewById(R.id.progress_circular);
         recycler = view.findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(requireContext()));
 
@@ -86,6 +89,7 @@ public class SeeAllFragment extends Fragment {
     }
 
     private void updateAdapter(){
+        progressBar.setVisibility(View.GONE);
         SearchAdapter searchAdapter = new SearchAdapter(positions, new ItemClickedHandler());
         recycler.setAdapter(searchAdapter);
     }
@@ -96,7 +100,7 @@ public class SeeAllFragment extends Fragment {
             final GetPositionView item = positions.get(position);
             if (mListener != null) {
                 Log.i("SeeAll", item.getId().toString());
-                mListener.onItemClicked(item);
+                mListener.onItemClicked(item.getId().toString(), true);
             }
         }
     }

@@ -50,7 +50,7 @@ public class SearchFragment extends Fragment {
     private static final String KEY_BOOLEAN = "wasButtonPressed";
 
     public interface IListener {
-        public void onItemClicked(GetPositionView item);
+        public void onItemClicked(String id, boolean isPosition);
     }
 
     protected IListener mListener;
@@ -222,8 +222,8 @@ public class SearchFragment extends Fragment {
             final GetPositionView item = data.get(position);
 
             if (mListener != null) {
-                mListener.onItemClicked(item);
-                Log.i("idididid", item.getId().toString());
+                mListener.onItemClicked(item.getId().toString(), item.getType().equals("POSITION"));
+                Log.i("id", item.getId().toString());
             }
         }
     }

@@ -13,7 +13,8 @@ import com.andreev.scanner.fragments.SeeAllFragment;
 
 public class MainActivity extends AppCompatActivity implements SearchFragment.IListener, SeeAllFragment.IListener {
 
-    public static final String TAG = "1234";
+    public static final String idTAG = "id";
+    public static final String TAG = "isPosition";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +26,12 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.IL
     }
 
     @Override
-    public void onItemClicked(GetPositionView item) {
-        Log.i("MainActivity", item.getId().toString());
+    public void onItemClicked(String id, boolean isPosition) {
+        Log.i("MainActivity", id);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, ItemFragment.newInstance(item))
+                .replace(R.id.fragment_container, ItemFragment.newInstance(id, isPosition))
                 .addToBackStack(null)
                 .commitAllowingStateLoss();
-        Log.i("MainActivity", item.getId().toString());
+        Log.i("MainActivity", id);
     }
 }

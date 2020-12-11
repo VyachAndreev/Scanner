@@ -16,7 +16,10 @@ public interface API {
     Call<List<GetPositionView>> searchedPositions(@Path("text") String text);
 
     @GET("/api/position/{id}")
-    Call<GetPositionView> byId(@Path("id") String id);
+    Call<GetPositionView> positionById(@Path("id") String id);
+
+    @GET("/api/position/{id}")
+    Call<GetPositionView> packageById(@Path("id") String id);
 
     @GET("/api/search/tag/{text}")
     Call<List<String>> tags(@Path("text") String text);
