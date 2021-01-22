@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.andreev.scanner.MainActivity;
 import com.andreev.scanner.R;
 
 public class MainFragment extends Fragment {
@@ -29,18 +30,12 @@ public class MainFragment extends Fragment {
 
         seeAllButton.setOnClickListener(view1 -> {
             if (getActivity() != null)
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, new SeeAllFragment())
-                        .addToBackStack(null)
-                        .commitAllowingStateLoss();
+                ((MainActivity) getActivity()).goToSeeAll();
         });
 
         searchButton.setOnClickListener(view12 -> {
             if (getActivity() != null)
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, new SearchFragment())
-                        .addToBackStack(null)
-                        .commitAllowingStateLoss();
+                ((MainActivity) getActivity()).goToSearch();
         });
 
     }

@@ -51,6 +51,12 @@ public class ItemFragment extends Fragment {
 
         final String id = id();
         final Boolean isPosition = isPosition();
+
+        view.findViewById(R.id.button_to_main).setOnClickListener(view1 -> {
+            if (getActivity() != null) {
+                ((MainActivity) getActivity()).goToMain();
+            }
+        });
         if (id != null && isPosition != null) {
             if (isPosition) {
                 try {

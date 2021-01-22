@@ -20,18 +20,45 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.IL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new MainFragment())
-                .commitAllowingStateLoss();
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new MainFragment())
+                    .commitAllowingStateLoss();
+        }
     }
 
     @Override
     public void onItemClicked(String id, boolean isPosition) {
         Log.i("MainActivity", id);
+        goToItem(id, isPosition);
+        Log.i("MainActivity", id);
+    }
+
+    public void goToMain() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new MainFragment())
+                .addToBackStack(null)
+                .commitAllowingStateLoss();
+    }
+
+    public void goToSearch() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new SearchFragment())
+                .addToBackStack(null)
+                .commitAllowingStateLoss();
+    }
+
+    public void goToSeeAll() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new SeeAllFragment())
+                .addToBackStack(null)
+                .commitAllowingStateLoss();
+    }
+
+    public void goToItem(String id, boolean isPosition) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, ItemFragment.newInstance(id, isPosition))
                 .addToBackStack(null)
                 .commitAllowingStateLoss();
-        Log.i("MainActivity", id);
     }
 }

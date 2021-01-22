@@ -147,7 +147,7 @@ public class SearchFragment extends Fragment {
                     public void onResponse(@NotNull Call<List<String>> call, @NotNull Response<List<String>> response) {
                         if (response.body() != null) {
                             hints.addAll(response.body());
-                            Log.i("response", response.body().toString());
+                            Log.i("response tags", response.body().toString());
                             if (getActivity() != null) {
                                 getActivity().runOnUiThread(() -> setHints());
                             }
@@ -166,7 +166,7 @@ public class SearchFragment extends Fragment {
         } else {
             data.clear();
             try{
-                App.getApi().searchedPositions(text).enqueue(new Callback<List<GetPositionView>>() {
+                App.getApi().searched(text).enqueue(new Callback<List<GetPositionView>>() {
                     @Override
                     public void onResponse(@NotNull Call<List<GetPositionView>> call, @NotNull Response<List<GetPositionView>> response) {
                         if (response.body() != null) {
