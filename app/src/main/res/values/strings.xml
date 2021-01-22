@@ -17,6 +17,8 @@
     <string name="made_by">Производитель:</string>
     <string name="to_main">На главную</string>
     <string name="no_data">Данные отсутствуют</string>
+    <string name="ship">Отгрузить</string>
+    <string name="except">Исключить</string>
 
 
 </resources>
