@@ -5,27 +5,27 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.andreev.scanner.App;
 import com.andreev.scanner.MainActivity;
 import com.andreev.scanner.R;
 import com.andreev.scanner.classes.GetPositionView;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.io.Serializable;
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ItemFragment extends Fragment {
+
+    private View table;
+    private ProgressBar progressBar;
 
     public static ItemFragment newInstance(String id, boolean isPosition) {
 
@@ -51,6 +51,11 @@ public class ItemFragment extends Fragment {
 
         final String id = id();
         final Boolean isPosition = isPosition();
+
+        table = view.findViewById(R.id.table);
+        progressBar = view.findViewById(R.id.progress_bar);
+
+        table.setVisibility(View.GONE);
 
         view.findViewById(R.id.button_to_main).setOnClickListener(view1 -> {
             if (getActivity() != null) {
@@ -98,6 +103,10 @@ public class ItemFragment extends Fragment {
     }
 
     private void setUI(View view, GetPositionView item) {
+
+        progressBar.setVisibility(View.GONE);
+        table.setVisibility(View.VISIBLE);
+
         TextView mark = view.findViewById(R.id.mark);
         TextView diameter = view.findViewById(R.id.diameter);
         TextView packing = view.findViewById(R.id.packing);
