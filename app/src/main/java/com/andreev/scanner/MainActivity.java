@@ -10,6 +10,7 @@ import com.andreev.scanner.fragments.ItemFragment;
 import com.andreev.scanner.fragments.MainFragment;
 import com.andreev.scanner.fragments.SearchFragment;
 import com.andreev.scanner.fragments.SeeAllFragment;
+import com.andreev.scanner.fragments.ShipmentFragment;
 
 public class MainActivity extends AppCompatActivity implements SearchFragment.IListener, SeeAllFragment.IListener {
 
@@ -58,6 +59,13 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.IL
     public void goToItem(String id, boolean isPosition) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, ItemFragment.newInstance(id, isPosition))
+                .addToBackStack(null)
+                .commitAllowingStateLoss();
+    }
+
+    public void goToShipment() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new ShipmentFragment())
                 .addToBackStack(null)
                 .commitAllowingStateLoss();
     }

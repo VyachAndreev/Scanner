@@ -19,6 +19,8 @@
     <string name="no_data">Данные отсутствуют</string>
     <string name="ship">Отгрузить</string>
     <string name="except">Исключить</string>
+    <string name="agent">Контр. агент</string>
+    <string name="sum">Счет</string>
 
 
 </resources>

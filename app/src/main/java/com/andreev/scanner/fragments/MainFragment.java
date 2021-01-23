@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,17 +24,20 @@ public class MainFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button seeAllButton = view.findViewById(R.id.see_all_btn);
-        Button searchButton = view.findViewById(R.id.search_btn);
 
-        seeAllButton.setOnClickListener(view1 -> {
+        view.findViewById(R.id.see_all_btn).setOnClickListener(view1 -> {
             if (getActivity() != null)
                 ((MainActivity) getActivity()).goToSeeAll();
         });
 
-        searchButton.setOnClickListener(view12 -> {
+        view.findViewById(R.id.search_btn).setOnClickListener(view12 -> {
             if (getActivity() != null)
                 ((MainActivity) getActivity()).goToSearch();
+        });
+
+        view.findViewById(R.id.shipment_btn).setOnClickListener(view13 -> {
+            if (getActivity() != null)
+                ((MainActivity) getActivity()).goToShipment();
         });
 
     }

@@ -46,6 +46,8 @@
 
         android:layout_marginTop="5dp"
         android:layout_marginStart="10dp"
+
+        android:singleLine="true"
         />
     <TextView
         android:id="@+id/lower_tv"
@@ -69,10 +71,11 @@
 
         android:layout_marginTop="5dp"
         android:layout_marginStart="10dp"
+        android:singleLine="true"
         />
 
     <Button
-        android:id="@+id/ship_btn"
+        android:id="@+id/shipment_btn"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
 
         android:layout_centerInParent="true"
-        android:layout_marginBottom="10dp"
 
         android:text="@string/see_all"
         />
@@ -23,8 +22,22 @@
 
         android:layout_centerHorizontal="true"
         android:layout_below="@id/see_all_btn"
+        android:layout_marginTop="10dp"
 
         android:text="@string/search"
+        />
+
+    <Button
+        android:id="@+id/shipment_btn"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/search_btn"
+        android:layout_marginTop="10dp"
+
+        android:text="@string/ship"
         />
 
 
