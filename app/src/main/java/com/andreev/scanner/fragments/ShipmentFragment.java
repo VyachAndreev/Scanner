@@ -76,7 +76,6 @@ public class ShipmentFragment extends Fragment {
 
         view.findViewById(R.id.shipment_btn).setOnClickListener(view1 -> {
             if (!isSecondUI) {
-                //TODO send request
                 setSecondUI();
                 isSecondUI = true;
                 App.getApi().shipment(upperEditText.getText().toString(), lowerEditText.getText().toString()).enqueue(new Callback<List<String>>() {

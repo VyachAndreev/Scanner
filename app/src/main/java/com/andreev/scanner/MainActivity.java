@@ -8,6 +8,7 @@ import android.util.Log;
 import com.andreev.scanner.classes.GetPositionView;
 import com.andreev.scanner.fragments.ItemFragment;
 import com.andreev.scanner.fragments.MainFragment;
+import com.andreev.scanner.fragments.ReceiveFragment;
 import com.andreev.scanner.fragments.SearchFragment;
 import com.andreev.scanner.fragments.SeeAllFragment;
 import com.andreev.scanner.fragments.ShipmentFragment;
@@ -66,6 +67,13 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.IL
     public void goToShipment() {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, new ShipmentFragment())
+                .addToBackStack(null)
+                .commitAllowingStateLoss();
+    }
+
+    public void goToReceiver() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new ReceiveFragment())
                 .addToBackStack(null)
                 .commitAllowingStateLoss();
     }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <EditText
+        android:id="@+id/receive_etv"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="10dp"
+
+        android:singleLine="true"
+        />
+
+    <Button
+        android:id="@+id/receive_btn"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+
+        android:text="@string/receive"
+        android:textAllCaps="false"
+        android:textSize="35sp"
+
+        />
+</LinearLayout>

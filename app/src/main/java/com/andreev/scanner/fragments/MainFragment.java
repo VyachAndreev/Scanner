@@ -40,5 +40,10 @@ public class MainFragment extends Fragment {
                 ((MainActivity) getActivity()).goToShipment();
         });
 
+        view.findViewById(R.id.receiver_btn).setOnClickListener(view13 -> {
+            if (getActivity() != null)
+                ((MainActivity) getActivity()).goToReceiver();
+        });
+
     }
 }

@@ -21,6 +21,9 @@
     <string name="except">Исключить</string>
     <string name="agent">Контр. агент</string>
     <string name="sum">Счет</string>
+    <string name="receive">Принять</string>
+    <string name="receiver">Приемка</string>
+
 
 
 </resources>
